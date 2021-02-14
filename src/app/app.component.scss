@@ -1,0 +1,36 @@
+.box {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  height: 33.333vh;
+  border-bottom: 1px solid white;
+  color: white;
+  font-size: 36px;
+  box-sizing: border-box;
+
+  .timer {
+    flex: 3 0 0;
+    background: #1e1e1e;
+    text-align: center;
+    line-height: 33.333vh;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+
+    &.danger {
+      background: #881111;
+    }
+
+    img {
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+
+  .buttons {
+    flex: 1 0 0;
+    background: #2d2d2d;
+    text-align: center;
+    line-height: 33.333vh;
+    cursor: pointer;
+  }
+}
