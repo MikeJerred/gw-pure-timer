@@ -58,7 +58,7 @@ class TimerPipe {
             return '-';
         const seconds = Math.floor((value / 1000) % 60);
         const minutes = Math.floor(value / 60000);
-        return `${minutes}:${seconds.toPrecision()}`;
+        return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     }
 }
 TimerPipe.ɵfac = function TimerPipe_Factory(t) { return new (t || TimerPipe)(); };
