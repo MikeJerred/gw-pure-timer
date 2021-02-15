@@ -11,6 +11,7 @@ export class AppComponent {
   alcoholTimer: number | null = null;
   eggTimer: number | null = null;
   allTimer: number | null = null;
+  instanceTimer: number | null = null;
 
   private readonly dangerBuffer = 5000;
   private readonly warningBuffer = 30000;
@@ -22,6 +23,7 @@ export class AppComponent {
   private stopAlcohol$ = new Subject<void>();
   private stopEgg$ = new Subject<void>();
   private stopAll$ = new Subject<void>();
+  private stopInstance$ = new Subject<void>();
 
   isDanger(time: number | null) {
     return time !== null && time <= this.dangerBuffer + 1000;
@@ -85,6 +87,24 @@ export class AppComponent {
     this.allTimer = null;
   }
 
+  startInstance() {
+    if (this.instanceTimer === null) {
+      this.instanceTimer = -3000;
+      interval(this.tickLength)
+        .pipe(
+          map(ticks => ticks * this.tickLength),
+          takeUntil(this.stopInstance$)
+        ).subscribe(time => {
+          this.instanceTimer = time - 3000;
+        });
+    }
+  }
+
+  stopInstance() {
+    this.stopInstance$.next();
+    this.instanceTimer = null;
+  }
+
   private createTimer(stop$: Observable<void>, refreshTime: number, text: string) {
     let state = 100;
 
@@ -100,7 +120,6 @@ export class AppComponent {
               : 'pop ' + text;
 
             state = currentState;
-
 
             const utterance = new SpeechSynthesisUtterance(speechText);
             utterance.rate = 2;

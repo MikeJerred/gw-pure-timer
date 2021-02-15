@@ -5,6 +5,11 @@ export class TimerPipe implements PipeTransform {
   transform(value: number | null): string {
     if (value === null) return '-';
 
+    if (value < 0) {
+      const seconds = Math.floor((value / 1000) % 60);
+      return `${seconds}`;
+    }
+
     const seconds = Math.floor((value / 1000) % 60);
     const minutes = Math.floor(value / 60000);
 
