@@ -107,9 +107,9 @@ class AppComponent {
         this.dangerBuffer = 5000;
         this.warningBuffer = 30000;
         this.tickLength = 100;
-        this.alcoholRefreshTime = 8000; //2 * 60 * 1000;
-        this.eggRefreshTime = 8000; // 5 * 60 * 1000;
-        this.allRefreshTime = 8000; // 10 * 60 * 1000;
+        this.alcoholRefreshTime = 2 * 60 * 1000;
+        this.eggRefreshTime = 5 * 60 * 1000;
+        this.allRefreshTime = 10 * 60 * 1000;
         this.useBeeps = false;
         this.stopAlcohol$ = new rxjs__WEBPACK_IMPORTED_MODULE_0__["Subject"]();
         this.stopEgg$ = new rxjs__WEBPACK_IMPORTED_MODULE_0__["Subject"]();

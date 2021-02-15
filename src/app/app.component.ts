@@ -23,9 +23,9 @@ export class AppComponent {
   private readonly dangerBuffer = 5000;
   private readonly warningBuffer = 30000;
   private readonly tickLength = 100;
-  private readonly alcoholRefreshTime = 8000; //2 * 60 * 1000;
-  private readonly eggRefreshTime = 8000;// 5 * 60 * 1000;
-  private readonly allRefreshTime = 8000;// 10 * 60 * 1000;
+  private readonly alcoholRefreshTime = 2 * 60 * 1000;
+  private readonly eggRefreshTime = 5 * 60 * 1000;
+  private readonly allRefreshTime = 10 * 60 * 1000;
 
   private useBeeps = false;
   private stopAlcohol$ = new Subject<void>();
