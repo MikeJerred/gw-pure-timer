@@ -12,7 +12,8 @@ export class AppComponent {
   eggTimer: number | null = null;
   allTimer: number | null = null;
 
-  readonly buffer = 5000;
+  private readonly dangerBuffer = 5000;
+  private readonly warningBuffer = 30000;
   private readonly tickLength = 100;
   private readonly alcoholRefreshTime = 2 * 60 * 1000;
   private readonly eggRefreshTime = 5 * 60 * 1000;
@@ -23,7 +24,11 @@ export class AppComponent {
   private stopAll$ = new Subject<void>();
 
   isDanger(time: number | null) {
-    return time !== null && time <= this.buffer + 1000;
+    return time !== null && time <= this.dangerBuffer + 1000;
+  }
+
+  isWarning(time: number | null) {
+    return time !== null && time <= this.warningBuffer + 1000;
   }
 
   startAlcohol() {
@@ -86,7 +91,7 @@ export class AppComponent {
     return interval(this.tickLength).pipe(
       map(ticks => refreshTime - ticks * this.tickLength),
       tap(timeLeft => {
-        if (timeLeft < this.buffer + 1000) {
+        if (timeLeft < this.dangerBuffer + 1000) {
           const currentState = Math.floor(timeLeft / 1000);
           if (state > currentState) {
             const speechText =
