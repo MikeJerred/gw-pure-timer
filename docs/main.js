@@ -105,6 +105,12 @@ class AppComponent {
         this.stopEgg$ = new rxjs__WEBPACK_IMPORTED_MODULE_0__["Subject"]();
         this.stopAll$ = new rxjs__WEBPACK_IMPORTED_MODULE_0__["Subject"]();
         this.stopInstance$ = new rxjs__WEBPACK_IMPORTED_MODULE_0__["Subject"]();
+        try {
+            navigator.wakeLock.request('screen');
+        }
+        catch (error) {
+            // could not request wake lock
+        }
     }
     isDanger(time) {
         return time !== null && time <= this.dangerBuffer + 1000;

@@ -25,6 +25,14 @@ export class AppComponent {
   private stopAll$ = new Subject<void>();
   private stopInstance$ = new Subject<void>();
 
+  constructor() {
+    try {
+      (navigator as any).wakeLock.request('screen');
+    } catch (error) {
+      // could not request wake lock
+    }
+  }
+
   isDanger(time: number | null) {
     return time !== null && time <= this.dangerBuffer + 1000;
   }
