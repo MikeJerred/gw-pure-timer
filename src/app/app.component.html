@@ -3,18 +3,12 @@
   <div class="buttons" (click)="stopInstance()">Stop</div>
 </div>
 <div class="box">
-  <div class="timer" (click)="startAlcohol()" [class.warning]="isWarning(alcoholTimer)" [class.danger]="isDanger(alcoholTimer)">
-    <img src="https://wiki.guildwars.com/images/4/47/Dwarven_Ale.png">
-    {{alcoholTimer | timer}}
-  </div>
-  <div class="buttons" (click)="stopAlcohol()">Stop</div>
-</div>
-<div class="box">
   <div class="timer" (click)="startEgg()" [class.warning]="isWarning(eggTimer)" [class.danger]="isDanger(eggTimer)">
     <img src="https://wiki.guildwars.com/images/9/97/Golden_Egg.png">
     {{eggTimer | timer}}
   </div>
   <div class="buttons" (click)="stopEgg()">Stop</div>
+  <div class="both-button" (click)="startEgg(); startAll();">Both</div>
 </div>
 <div class="box">
   <div class="timer" (click)="startAll()" [class.warning]="isWarning(allTimer)" [class.danger]="isDanger(allTimer)">
@@ -22,4 +16,11 @@
     {{allTimer | timer}}
   </div>
   <div class="buttons" (click)="stopAll()">Stop</div>
+</div>
+<div class="box">
+  <div class="timer" (click)="startAlcohol()" [class.warning]="isWarning(alcoholTimer)" [class.danger]="isDanger(alcoholTimer)">
+    <img src="https://wiki.guildwars.com/images/4/47/Dwarven_Ale.png">
+    {{alcoholTimer | timer}}
+  </div>
+  <div class="buttons" (click)="stopAlcohol()">Stop</div>
 </div>

@@ -45,7 +45,7 @@ export class AppComponent {
     try {
       (navigator as any).wakeLock.request('screen');
     } catch (error) {
-      // could not request wake lock
+      console.log('could not request wake lock');
     }
   }
 
@@ -113,14 +113,19 @@ export class AppComponent {
 
   startInstance() {
     if (this.instanceTimer === null) {
+      const startTime = new Date().getTime();
       this.instanceTimer = -3000;
+
       interval(this.tickLength)
         .pipe(
-          map(ticks => ticks * this.tickLength),
+          map(() => new Date().getTime() - startTime),
           takeUntil(this.stopInstance$)
-        ).subscribe(time => {
-          this.instanceTimer = time - 3000;
+        ).subscribe(elapsedMilliseconds => {
+          this.instanceTimer = elapsedMilliseconds - 3000;
         });
+
+      this.startEgg();
+      this.startAll();
     }
   }
 
@@ -130,10 +135,12 @@ export class AppComponent {
   }
 
   private createTimer(stop$: Observable<void>, refreshTime: number, pconType: PConType) {
+    const startTime = new Date().getTime();
     let state = 100;
 
     return interval(this.tickLength).pipe(
-      map(ticks => refreshTime - ticks * this.tickLength),
+      map(() => new Date().getTime() - startTime),
+      map(elapsedMilliseconds => refreshTime - elapsedMilliseconds),
       tap(timeLeft => {
         if (timeLeft < this.dangerBuffer + 1000) {
           const currentState = Math.floor(timeLeft / 1000);

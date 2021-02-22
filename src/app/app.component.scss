@@ -38,3 +38,17 @@
     cursor: pointer;
   }
 }
+
+.both-button {
+  position: absolute;
+  top: calc(25vh - 25px);
+  left: 100vw * 3 / 8;
+  width: 150px;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  border: 1px solid white;
+  background: #2d2d2d;
+  cursor: pointer;
+  z-index: 100;
+}

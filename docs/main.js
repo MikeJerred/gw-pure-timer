@@ -125,7 +125,7 @@ class AppComponent {
             navigator.wakeLock.request('screen');
         }
         catch (error) {
-            // could not request wake lock
+            console.log('could not request wake lock');
         }
     }
     isDanger(time) {
@@ -178,11 +178,14 @@ class AppComponent {
     }
     startInstance() {
         if (this.instanceTimer === null) {
+            const startTime = new Date().getTime();
             this.instanceTimer = -3000;
             Object(rxjs__WEBPACK_IMPORTED_MODULE_0__["interval"])(this.tickLength)
-                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["map"])(ticks => ticks * this.tickLength), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["takeUntil"])(this.stopInstance$)).subscribe(time => {
-                this.instanceTimer = time - 3000;
+                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["map"])(() => new Date().getTime() - startTime), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["takeUntil"])(this.stopInstance$)).subscribe(elapsedMilliseconds => {
+                this.instanceTimer = elapsedMilliseconds - 3000;
             });
+            this.startEgg();
+            this.startAll();
         }
     }
     stopInstance() {
@@ -190,8 +193,9 @@ class AppComponent {
         this.instanceTimer = null;
     }
     createTimer(stop$, refreshTime, pconType) {
+        const startTime = new Date().getTime();
         let state = 100;
-        return Object(rxjs__WEBPACK_IMPORTED_MODULE_0__["interval"])(this.tickLength).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["map"])(ticks => refreshTime - ticks * this.tickLength), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["tap"])(timeLeft => {
+        return Object(rxjs__WEBPACK_IMPORTED_MODULE_0__["interval"])(this.tickLength).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["map"])(() => new Date().getTime() - startTime), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["map"])(elapsedMilliseconds => refreshTime - elapsedMilliseconds), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["tap"])(timeLeft => {
             if (timeLeft < this.dangerBuffer + 1000) {
                 const currentState = Math.floor(timeLeft / 1000);
                 if (state > currentState) {
@@ -225,7 +229,7 @@ class AppComponent {
     }
 }
 AppComponent.ɵfac = function AppComponent_Factory(t) { return new (t || AppComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_3__["ActivatedRoute"])); };
-AppComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdefineComponent"]({ type: AppComponent, selectors: [["app-root"]], decls: 27, vars: 24, consts: [[1, "box"], [1, "timer", 3, "click"], [1, "buttons", 3, "click"], ["src", "https://wiki.guildwars.com/images/4/47/Dwarven_Ale.png"], ["src", "https://wiki.guildwars.com/images/9/97/Golden_Egg.png"], ["src", "https://wiki.guildwars.com/images/e/ee/Candy_Corn.png"]], template: function AppComponent_Template(rf, ctx) { if (rf & 1) {
+AppComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdefineComponent"]({ type: AppComponent, selectors: [["app-root"]], decls: 29, vars: 24, consts: [[1, "box"], [1, "timer", 3, "click"], [1, "buttons", 3, "click"], ["src", "https://wiki.guildwars.com/images/9/97/Golden_Egg.png"], [1, "both-button", 3, "click"], ["src", "https://wiki.guildwars.com/images/e/ee/Candy_Corn.png"], ["src", "https://wiki.guildwars.com/images/4/47/Dwarven_Ale.png"]], template: function AppComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "div", 1);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function AppComponent_Template_div_click_1_listener() { return ctx.startInstance(); });
@@ -239,56 +243,60 @@ AppComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdefineCompo
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](6, "div", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](7, "div", 1);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function AppComponent_Template_div_click_7_listener() { return ctx.startAlcohol(); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function AppComponent_Template_div_click_7_listener() { return ctx.startEgg(); });
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](8, "img", 3);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](9);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵpipe"](10, "timer");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](11, "div", 2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function AppComponent_Template_div_click_11_listener() { return ctx.stopAlcohol(); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function AppComponent_Template_div_click_11_listener() { return ctx.stopEgg(); });
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](12, "Stop");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](13, "div", 0);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](14, "div", 1);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function AppComponent_Template_div_click_14_listener() { return ctx.startEgg(); });
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](15, "img", 4);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](16);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵpipe"](17, "timer");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](18, "div", 2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function AppComponent_Template_div_click_18_listener() { return ctx.stopEgg(); });
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](19, "Stop");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](13, "div", 4);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function AppComponent_Template_div_click_13_listener() { ctx.startEgg(); return ctx.startAll(); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](14, "Both");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](20, "div", 0);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](21, "div", 1);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function AppComponent_Template_div_click_21_listener() { return ctx.startAll(); });
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](22, "img", 5);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](23);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵpipe"](24, "timer");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](15, "div", 0);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](16, "div", 1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function AppComponent_Template_div_click_16_listener() { return ctx.startAll(); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](17, "img", 5);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](18);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵpipe"](19, "timer");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](25, "div", 2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function AppComponent_Template_div_click_25_listener() { return ctx.stopAll(); });
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](26, "Stop");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](20, "div", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function AppComponent_Template_div_click_20_listener() { return ctx.stopAll(); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](21, "Stop");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](22, "div", 0);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](23, "div", 1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function AppComponent_Template_div_click_23_listener() { return ctx.startAlcohol(); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](24, "img", 6);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](25);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵpipe"](26, "timer");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](27, "div", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function AppComponent_Template_div_click_27_listener() { return ctx.stopAlcohol(); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](28, "Stop");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     } if (rf & 2) {
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](_angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵpipeBind1"](3, 16, ctx.instanceTimer));
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](5);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵclassProp"]("warning", ctx.isWarning(ctx.alcoholTimer))("danger", ctx.isDanger(ctx.alcoholTimer));
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵpipeBind1"](10, 18, ctx.alcoholTimer), " ");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](5);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵclassProp"]("warning", ctx.isWarning(ctx.eggTimer))("danger", ctx.isDanger(ctx.eggTimer));
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵpipeBind1"](17, 20, ctx.eggTimer), " ");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](5);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵpipeBind1"](10, 18, ctx.eggTimer), " ");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](7);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵclassProp"]("warning", ctx.isWarning(ctx.allTimer))("danger", ctx.isDanger(ctx.allTimer));
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵpipeBind1"](24, 22, ctx.allTimer), " ");
-    } }, pipes: [_timer_pipe__WEBPACK_IMPORTED_MODULE_4__["TimerPipe"]], styles: [".box[_ngcontent-%COMP%] {\n  position: relative;\n  display: flex;\n  justify-content: center;\n  height: 25vh;\n  border-bottom: 1px solid white;\n  color: white;\n  font-size: 36px;\n  box-sizing: border-box;\n}\n.box[_ngcontent-%COMP%]   .timer[_ngcontent-%COMP%] {\n  flex: 3 0 0;\n  background: #1e1e1e;\n  text-align: center;\n  line-height: 25vh;\n  cursor: pointer;\n  transition: all 0.3s ease-in-out;\n}\n.box[_ngcontent-%COMP%]   .timer.danger[_ngcontent-%COMP%] {\n  background: #881111;\n}\n.box[_ngcontent-%COMP%]   .timer.warning[_ngcontent-%COMP%] {\n  background: #bb6622;\n}\n.box[_ngcontent-%COMP%]   .timer[_ngcontent-%COMP%]   img[_ngcontent-%COMP%] {\n  display: inline-block;\n  vertical-align: middle;\n}\n.box[_ngcontent-%COMP%]   .buttons[_ngcontent-%COMP%] {\n  flex: 1 0 0;\n  background: #2d2d2d;\n  text-align: center;\n  line-height: 25vh;\n  cursor: pointer;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uXFwuLlxcYXBwLmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0Usa0JBQUE7RUFDQSxhQUFBO0VBQ0EsdUJBQUE7RUFDQSxZQUFBO0VBQ0EsOEJBQUE7RUFDQSxZQUFBO0VBQ0EsZUFBQTtFQUNBLHNCQUFBO0FBQ0Y7QUFDRTtFQUNFLFdBQUE7RUFDQSxtQkFBQTtFQUNBLGtCQUFBO0VBQ0EsaUJBQUE7RUFDQSxlQUFBO0VBQ0EsZ0NBQUE7QUFDSjtBQUNJO0VBQ0UsbUJBQUE7QUFDTjtBQUVJO0VBQ0UsbUJBQUE7QUFBTjtBQUdJO0VBQ0UscUJBQUE7RUFDQSxzQkFBQTtBQUROO0FBS0U7RUFDRSxXQUFBO0VBQ0EsbUJBQUE7RUFDQSxrQkFBQTtFQUNBLGlCQUFBO0VBQ0EsZUFBQTtBQUhKIiwiZmlsZSI6ImFwcC5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIi5ib3gge1xyXG4gIHBvc2l0aW9uOiByZWxhdGl2ZTtcclxuICBkaXNwbGF5OiBmbGV4O1xyXG4gIGp1c3RpZnktY29udGVudDogY2VudGVyO1xyXG4gIGhlaWdodDogMjV2aDtcclxuICBib3JkZXItYm90dG9tOiAxcHggc29saWQgd2hpdGU7XHJcbiAgY29sb3I6IHdoaXRlO1xyXG4gIGZvbnQtc2l6ZTogMzZweDtcclxuICBib3gtc2l6aW5nOiBib3JkZXItYm94O1xyXG5cclxuICAudGltZXIge1xyXG4gICAgZmxleDogMyAwIDA7XHJcbiAgICBiYWNrZ3JvdW5kOiAjMWUxZTFlO1xyXG4gICAgdGV4dC1hbGlnbjogY2VudGVyO1xyXG4gICAgbGluZS1oZWlnaHQ6IDI1dmg7XHJcbiAgICBjdXJzb3I6IHBvaW50ZXI7XHJcbiAgICB0cmFuc2l0aW9uOiBhbGwgMC4zcyBlYXNlLWluLW91dDtcclxuXHJcbiAgICAmLmRhbmdlciB7XHJcbiAgICAgIGJhY2tncm91bmQ6ICM4ODExMTE7XHJcbiAgICB9XHJcblxyXG4gICAgJi53YXJuaW5nIHtcclxuICAgICAgYmFja2dyb3VuZDogI2JiNjYyMjtcclxuICAgIH1cclxuXHJcbiAgICBpbWcge1xyXG4gICAgICBkaXNwbGF5OiBpbmxpbmUtYmxvY2s7XHJcbiAgICAgIHZlcnRpY2FsLWFsaWduOiBtaWRkbGU7XHJcbiAgICB9XHJcbiAgfVxyXG5cclxuICAuYnV0dG9ucyB7XHJcbiAgICBmbGV4OiAxIDAgMDtcclxuICAgIGJhY2tncm91bmQ6ICMyZDJkMmQ7XHJcbiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7XHJcbiAgICBsaW5lLWhlaWdodDogMjV2aDtcclxuICAgIGN1cnNvcjogcG9pbnRlcjtcclxuICB9XHJcbn1cclxuIl19 */"] });
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵpipeBind1"](19, 20, ctx.allTimer), " ");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](5);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵclassProp"]("warning", ctx.isWarning(ctx.alcoholTimer))("danger", ctx.isDanger(ctx.alcoholTimer));
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵpipeBind1"](26, 22, ctx.alcoholTimer), " ");
+    } }, pipes: [_timer_pipe__WEBPACK_IMPORTED_MODULE_4__["TimerPipe"]], styles: [".box[_ngcontent-%COMP%] {\n  position: relative;\n  display: flex;\n  justify-content: center;\n  height: 25vh;\n  border-bottom: 1px solid white;\n  color: white;\n  font-size: 36px;\n  box-sizing: border-box;\n}\n.box[_ngcontent-%COMP%]   .timer[_ngcontent-%COMP%] {\n  flex: 3 0 0;\n  background: #1e1e1e;\n  text-align: center;\n  line-height: 25vh;\n  cursor: pointer;\n  transition: all 0.3s ease-in-out;\n}\n.box[_ngcontent-%COMP%]   .timer.danger[_ngcontent-%COMP%] {\n  background: #881111;\n}\n.box[_ngcontent-%COMP%]   .timer.warning[_ngcontent-%COMP%] {\n  background: #bb6622;\n}\n.box[_ngcontent-%COMP%]   .timer[_ngcontent-%COMP%]   img[_ngcontent-%COMP%] {\n  display: inline-block;\n  vertical-align: middle;\n}\n.box[_ngcontent-%COMP%]   .buttons[_ngcontent-%COMP%] {\n  flex: 1 0 0;\n  background: #2d2d2d;\n  text-align: center;\n  line-height: 25vh;\n  cursor: pointer;\n}\n.both-button[_ngcontent-%COMP%] {\n  position: absolute;\n  top: calc(25vh - 25px);\n  left: 37.5vw;\n  width: 150px;\n  height: 50px;\n  line-height: 50px;\n  text-align: center;\n  border: 1px solid white;\n  background: #2d2d2d;\n  cursor: pointer;\n  z-index: 100;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uXFwuLlxcYXBwLmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0Usa0JBQUE7RUFDQSxhQUFBO0VBQ0EsdUJBQUE7RUFDQSxZQUFBO0VBQ0EsOEJBQUE7RUFDQSxZQUFBO0VBQ0EsZUFBQTtFQUNBLHNCQUFBO0FBQ0Y7QUFDRTtFQUNFLFdBQUE7RUFDQSxtQkFBQTtFQUNBLGtCQUFBO0VBQ0EsaUJBQUE7RUFDQSxlQUFBO0VBQ0EsZ0NBQUE7QUFDSjtBQUNJO0VBQ0UsbUJBQUE7QUFDTjtBQUVJO0VBQ0UsbUJBQUE7QUFBTjtBQUdJO0VBQ0UscUJBQUE7RUFDQSxzQkFBQTtBQUROO0FBS0U7RUFDRSxXQUFBO0VBQ0EsbUJBQUE7RUFDQSxrQkFBQTtFQUNBLGlCQUFBO0VBQ0EsZUFBQTtBQUhKO0FBT0E7RUFDRSxrQkFBQTtFQUNBLHNCQUFBO0VBQ0EsWUFBQTtFQUNBLFlBQUE7RUFDQSxZQUFBO0VBQ0EsaUJBQUE7RUFDQSxrQkFBQTtFQUNBLHVCQUFBO0VBQ0EsbUJBQUE7RUFDQSxlQUFBO0VBQ0EsWUFBQTtBQUpGIiwiZmlsZSI6ImFwcC5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIi5ib3gge1xyXG4gIHBvc2l0aW9uOiByZWxhdGl2ZTtcclxuICBkaXNwbGF5OiBmbGV4O1xyXG4gIGp1c3RpZnktY29udGVudDogY2VudGVyO1xyXG4gIGhlaWdodDogMjV2aDtcclxuICBib3JkZXItYm90dG9tOiAxcHggc29saWQgd2hpdGU7XHJcbiAgY29sb3I6IHdoaXRlO1xyXG4gIGZvbnQtc2l6ZTogMzZweDtcclxuICBib3gtc2l6aW5nOiBib3JkZXItYm94O1xyXG5cclxuICAudGltZXIge1xyXG4gICAgZmxleDogMyAwIDA7XHJcbiAgICBiYWNrZ3JvdW5kOiAjMWUxZTFlO1xyXG4gICAgdGV4dC1hbGlnbjogY2VudGVyO1xyXG4gICAgbGluZS1oZWlnaHQ6IDI1dmg7XHJcbiAgICBjdXJzb3I6IHBvaW50ZXI7XHJcbiAgICB0cmFuc2l0aW9uOiBhbGwgMC4zcyBlYXNlLWluLW91dDtcclxuXHJcbiAgICAmLmRhbmdlciB7XHJcbiAgICAgIGJhY2tncm91bmQ6ICM4ODExMTE7XHJcbiAgICB9XHJcblxyXG4gICAgJi53YXJuaW5nIHtcclxuICAgICAgYmFja2dyb3VuZDogI2JiNjYyMjtcclxuICAgIH1cclxuXHJcbiAgICBpbWcge1xyXG4gICAgICBkaXNwbGF5OiBpbmxpbmUtYmxvY2s7XHJcbiAgICAgIHZlcnRpY2FsLWFsaWduOiBtaWRkbGU7XHJcbiAgICB9XHJcbiAgfVxyXG5cclxuICAuYnV0dG9ucyB7XHJcbiAgICBmbGV4OiAxIDAgMDtcclxuICAgIGJhY2tncm91bmQ6ICMyZDJkMmQ7XHJcbiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7XHJcbiAgICBsaW5lLWhlaWdodDogMjV2aDtcclxuICAgIGN1cnNvcjogcG9pbnRlcjtcclxuICB9XHJcbn1cclxuXHJcbi5ib3RoLWJ1dHRvbiB7XHJcbiAgcG9zaXRpb246IGFic29sdXRlO1xyXG4gIHRvcDogY2FsYygyNXZoIC0gMjVweCk7XHJcbiAgbGVmdDogMTAwdncgKiAzIC8gODtcclxuICB3aWR0aDogMTUwcHg7XHJcbiAgaGVpZ2h0OiA1MHB4O1xyXG4gIGxpbmUtaGVpZ2h0OiA1MHB4O1xyXG4gIHRleHQtYWxpZ246IGNlbnRlcjtcclxuICBib3JkZXI6IDFweCBzb2xpZCB3aGl0ZTtcclxuICBiYWNrZ3JvdW5kOiAjMmQyZDJkO1xyXG4gIGN1cnNvcjogcG9pbnRlcjtcclxuICB6LWluZGV4OiAxMDA7XHJcbn1cclxuIl19 */"] });
 
 
 /***/ }),
