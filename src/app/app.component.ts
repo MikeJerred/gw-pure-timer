@@ -28,6 +28,7 @@ export class AppComponent {
   private readonly allRefreshTime = 10 * 60 * 1000;
 
   private useBeeps = false;
+  private silent = false;
   private stopAlcohol$ = new Subject<void>();
   private stopEgg$ = new Subject<void>();
   private stopAll$ = new Subject<void>();
@@ -40,6 +41,7 @@ export class AppComponent {
   constructor(private router: ActivatedRoute) {
     this.router.queryParams.subscribe(queryParams => {
       this.useBeeps = !!queryParams.beeps;
+      this.silent = !!queryParams.silent;
     });
 
     try {
@@ -151,7 +153,7 @@ export class AppComponent {
                 : pconType === PConType.Egg ? this.eggAudio
                 : pconType === PConType.Corn ? this.cornAudio
                 : null;
-              if (audio && state === 100) {
+              if (audio && state === 100 && (!this.silent || pconType === PConType.Alcohol)) {
                 audio.play();
                 state = 0;
               }
@@ -169,10 +171,13 @@ export class AppComponent {
 
               state = currentState;
 
-              const utterance = new SpeechSynthesisUtterance(speechText);
-              utterance.rate = 2;
-              window.speechSynthesis.cancel();
-              window.speechSynthesis.speak(utterance);
+              if (!this.silent || pconType === PConType.Alcohol) {
+                const utterance = new SpeechSynthesisUtterance(speechText);
+                utterance.rate = 2;
+                utterance.lang = 'en-US';
+                window.speechSynthesis.cancel();
+                window.speechSynthesis.speak(utterance);
+              }
             }
 
           }

@@ -111,6 +111,7 @@ class AppComponent {
         this.eggRefreshTime = 5 * 60 * 1000;
         this.allRefreshTime = 10 * 60 * 1000;
         this.useBeeps = false;
+        this.silent = false;
         this.stopAlcohol$ = new rxjs__WEBPACK_IMPORTED_MODULE_0__["Subject"]();
         this.stopEgg$ = new rxjs__WEBPACK_IMPORTED_MODULE_0__["Subject"]();
         this.stopAll$ = new rxjs__WEBPACK_IMPORTED_MODULE_0__["Subject"]();
@@ -120,6 +121,7 @@ class AppComponent {
         this.cornAudio = new Audio(`assets/timer_beep_3.wav`);
         this.router.queryParams.subscribe(queryParams => {
             this.useBeeps = !!queryParams.beeps;
+            this.silent = !!queryParams.silent;
         });
         try {
             navigator.wakeLock.request('screen');
@@ -204,7 +206,7 @@ class AppComponent {
                             : pconType === PConType.Egg ? this.eggAudio
                                 : pconType === PConType.Corn ? this.cornAudio
                                     : null;
-                        if (audio && state === 100) {
+                        if (audio && state === 100 && (!this.silent || pconType === PConType.Alcohol)) {
                             audio.play();
                             state = 0;
                         }
@@ -218,10 +220,13 @@ class AppComponent {
                             : currentState > 0 ? `${currentState}`
                                 : 'pop ' + text;
                         state = currentState;
-                        const utterance = new SpeechSynthesisUtterance(speechText);
-                        utterance.rate = 2;
-                        window.speechSynthesis.cancel();
-                        window.speechSynthesis.speak(utterance);
+                        if (!this.silent || pconType === PConType.Alcohol) {
+                            const utterance = new SpeechSynthesisUtterance(speechText);
+                            utterance.rate = 2;
+                            utterance.lang = 'en-US';
+                            window.speechSynthesis.cancel();
+                            window.speechSynthesis.speak(utterance);
+                        }
                     }
                 }
             }
