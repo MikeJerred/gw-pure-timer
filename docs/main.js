@@ -206,7 +206,7 @@ class AppComponent {
                             : pconType === PConType.Egg ? this.eggAudio
                                 : pconType === PConType.Corn ? this.cornAudio
                                     : null;
-                        if (audio && state === 100 && (!this.silent || pconType === PConType.Alcohol)) {
+                        if (audio && state === 100 && !(this.silent && pconType === PConType.Corn)) {
                             audio.play();
                             state = 0;
                         }
