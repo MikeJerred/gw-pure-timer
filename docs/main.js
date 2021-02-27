@@ -108,7 +108,7 @@ class AppComponent {
         this.warningBuffer = 30000;
         this.tickLength = 100;
         this.alcoholRefreshTime = 2 * 60 * 1000;
-        this.eggRefreshTime = 4.5 * 60 * 1000;
+        this.eggRefreshTime = 4.75 * 60 * 1000;
         this.allRefreshTime = 9.5 * 60 * 1000;
         this.useBeeps = false;
         this.silent = false;
